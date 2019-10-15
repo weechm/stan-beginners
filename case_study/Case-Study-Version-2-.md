@@ -332,29 +332,6 @@ prior_predictive(
 )
 ```
 
-    ## Warning in rpois(N, lambda = exp(alpha + beta * employees)): NAs produced
-
-    ##   [1]         NA         NA         NA         NA         NA         NA
-    ##   [7]         NA         NA         NA         NA         NA         NA
-    ##  [13]         NA         NA         NA         NA         NA         NA
-    ##  [19]         NA         NA         NA         NA         NA         NA
-    ##  [25]         NA         NA         NA         NA         NA         NA
-    ##  [31]         NA         NA         NA         NA         NA         NA
-    ##  [37]         NA         NA         NA         NA         NA         NA
-    ##  [43]         NA         NA         NA         NA         NA         NA
-    ##  [49]         NA         NA         NA         NA         NA         NA
-    ##  [55]         NA         NA         NA         NA         NA         NA
-    ##  [61]         NA         NA         NA         NA         NA         NA
-    ##  [67]         NA         NA         NA         NA         NA         NA
-    ##  [73]         NA         NA         NA         NA         NA         NA
-    ##  [79]         NA         NA         NA         NA         NA         NA
-    ##  [85]         NA         NA         NA         NA         NA         NA
-    ##  [91]         NA         NA         NA         NA         NA         NA
-    ##  [97]         NA         NA         NA         NA         NA         NA
-    ## [103]         NA         NA         NA         NA         NA         NA
-    ## [109]         NA         NA         NA         NA         NA         NA
-    ## [115]         NA         NA         NA         NA         NA 2140552858
-
 ### Exploratory Data Analysis (Modeling) (STAN\!)
 
 Now we get to really run the stan code. Try following the steps listed

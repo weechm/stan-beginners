@@ -179,7 +179,7 @@ $$
 ### Prior Predictive Check 
 Now we want to run a prior predictive check to see what the priors we have choosen are saying is possible. 
 
-```{r simulate-poisson-data}
+```{r, simulate-poisson-data, eval = FALSE }
 # using normal distributions for priors on alpha and beta 
 prior_predictive <- function(employees, alpha_mean, alpha_sd, beta_mean, beta_sd) {
   N <- length(employees)
@@ -190,7 +190,7 @@ prior_predictive <- function(employees, alpha_mean, alpha_sd, beta_mean, beta_sd
 }
 ```
 
-```{r prior-pred-really-bad}
+```{r, prior-pred-really-bad, eval = FALSE }
 # you can run this chunk multiple times to keep generating different datasets
 prior_predictive(
   store$employees,
@@ -214,7 +214,7 @@ comp_model <- stan_model('stan_programs/version_2_stan.stan')
 The Stan model is now compiled so we need to prepare the data to be passed to the model. We have already uploaded our data into R but Stan requires that it is in a specific format. 
 
 We input data into stan in a list format. The things in your list need to match the data you declared in Stan. 
-```{r, stan-data, eval = FALSE}
+```{r, eval = FALSE }
 standata_simple <- list(
   N = nrow(store), 
   complaints = store$complaints,
@@ -235,10 +235,10 @@ fit_simple <- sampling(comp_model, data = standata_simple,
 ```
 
 
-```{r, eval = FALSE}
+```{r, eval = FALSE }
 print(fit_simple, pars = c('alpha','beta'))
 ```
-```{r, mcmc_hist, eval = FALSE}
+```{r, mcmc_hist, eval = FALSE }
 # https://mc-stan.org/bayesplot/reference/MCMC-distributions
 #draws <- as.matrix(fit_simple, pars = c('alpha','beta'))
 #draws_tibble <- as.tibble(draws)
@@ -257,7 +257,7 @@ mcmc_hist(draws) # marginal posteriors of alpha and beta
 mcmc_scatter(draws, alpha = 0.2, size = 1) # posterior of (alpha,beta)
 
 ```
-```{r, compare-prior-posterior, eval = FALSE}
+```{r, compare-prior-posterior, eval = FALSE }
 alpha_prior_post <- cbind(alpha_prior = rnorm(4000, log(7), 1), 
                           alpha_posterior = draws[, "alpha"])
 mcmc_hist(alpha_prior_post, facet_args = list(nrow = 2), binwidth = 0.1) + 
@@ -271,13 +271,13 @@ mcmc_hist(beta_prior_post, facet_args = list(nrow = 2), binwidth = 0.05) +
 ```
 ### Posterior Predictive Check 
 
-```{r, eval = FALSE}
+```{r, eval = FALSE }
 fit_summary <- summary(fit_simple)
 print(names(fit_summary))
 
 print(fit_summary$summary)
 ```
-```{r, eval = FALSE}
+```{r, eval = FALSE }
 alpha_beta_summary <- summary(fit_simple, pars = c("alpha", "beta"), probs = c(0.1, 0.9))$summary
 print(alpha_beta_summary)
 ```
