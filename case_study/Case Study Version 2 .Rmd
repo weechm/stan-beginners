@@ -25,10 +25,7 @@ of the models that we would like to use.
 
 #### What does Stan do?
 
-Stan works by running complex calculations in the background of our
-code. First you complie a stan model, then you send data to stan and it
-will run the model and then stan will send back any important
-information.
+Stan works by running complex Marcov chain Monte Carlo algorithums to calculate the log probability density function.  
 
 #### What does Stan code look like?
 
@@ -44,7 +41,7 @@ The **Data** block is used to declare the data that we will use in the model.
 
 The **Parameter** block is used to specify the parameters. 
 
-The **Model** block is used to define the model including the likelihood and the priors. 
+The **Model** block is used to define the model including the likelihood and priors. 
 
 #### How do you start using Stan?
 
@@ -94,19 +91,23 @@ data {
   vector[N] y;
 }
 ```
-First, you can see that a block is denoted with { } brackets and that after everyline of code there is a ; semi-colon. These are necessary for the code to run. 
+First, you can see that a block is denoted with { } brackets and that after every line of code there is a ; semi-colon. These are necessary for the code to run. 
 
-As we said before, the data block is where you declare your data. Your actual data will be in your r file but this tells stan what to look for. For every element, you have to declare what type of data it is. You will see this in other parts of Stan as well like in the parameters block. 
+As we said before, the data block is where you declare your data. Your actual data will be in your r file but this tells stan what to look for. For every element, you have to declare what type of data it is.
 
-There are two types of data you can declare ```int``` or ```real```. 
+There are two basic types of data you can declare ```int``` or ```real```. 
 
 **int** = count data 
 
 **real** = continuious data 
 
+There are other more advanced options for declaring dating using vectors and matrices which can be a more effecient ways to declare data and may be worth looking into for more complex model and data types. 
+
+It is also worth noting that stan is vectorized for effeciency. 
+
 Another thing you will notice is ```N```. Stan requires you to declare how my observaions you have as a variable N. 
 
-Next you need to declare any variables in your model and their type. Because each variable catergory has an individual variable for each observation, every variable is declared as a vector of that variable with N number of observations in that vector. 
+Next you need to declare any variables in your model and their type. In the example above there is one dependent variable ```y``` declared in the data. ```y``` is declared as an array with ```N``` observations. Again there are multiple ways to declare data. For example, this could have been declared with ```vector[N] y``` for essentially the same result.  
 
 ```<lower=1>``` is just a saftey measure that we can use to make sure that the data we insert is in the right form. For example, if you were to specify ```<lower=1>``` Stan would stop and give a warning message if you try to pass it any data with N less than 1, but this is not nessecary and is just a saftey check if you need it. 
 

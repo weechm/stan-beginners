@@ -145,7 +145,7 @@ library(bayesplot)
 ```{r load-data}
 # Import data. 
 
-store_data <- read_csv('data/store_data.csv')
+store_data <- read_csv('case_study/data/store_data.csv')
 store <- as.tibble(store_data)
 store
 
@@ -207,8 +207,8 @@ Now we get to really run the stan code. Try following the steps listed in the be
 
 Once we have writen the Stan we need to compile the model. 
 
-```{r, eval = FALSE }
-comp_model <- stan_model('stan_programs/version_2_stan.stan')
+```{r}
+comp_model <- stan_model('version_2_stan.stan')
 ```
 
 The Stan model is now compiled so we need to prepare the data to be passed to the model. We have already uploaded our data into R but Stan requires that it is in a specific format. 

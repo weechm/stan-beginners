@@ -1,6 +1,6 @@
 data {
   int<lower=1> N;
-  int<lower=0> complaints[N];
+  vector[N] complaints;
   vector<lower=0>[N] employees;
 }
 parameters {
