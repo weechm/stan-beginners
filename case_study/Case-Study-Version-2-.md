@@ -22,10 +22,8 @@ of the models that we would like to use.
 
 #### What does Stan do?
 
-Stan works by running complex calculations in the background of our
-code. First you complie a stan model, then you send data to stan and it
-will run the model and then stan will send back any important
-information.
+Stan works by running complex Marcov chain Monte Carlo algorithums to
+calculate the log probability density function.
 
 #### What does Stan code look like?
 
@@ -43,7 +41,7 @@ model.
 The **Parameter** block is used to specify the parameters.
 
 The **Model** block is used to define the model including the likelihood
-and the priors.
+and priors.
 
 #### How do you start using Stan?
 
@@ -102,33 +100,43 @@ data {
 ```
 
 First, you can see that a block is denoted with { } brackets and that
-after everyline of code there is a ; semi-colon. These are necessary for
-the code to run.
+after every line of code there is a ; semi-colon. These are necessary
+for the code to run.
 
 As we said before, the data block is where you declare your data. Your
 actual data will be in your r file but this tells stan what to look for.
-For every element, you have to declare what type of data it is. You will
-see this in other parts of Stan as well like in the parameters block.
+For every element, you have to declare what type of data it is.
 
-There are two types of data you can declare `int` or `real`.
+There are two basic types of data you can declare `int` or `real`.
 
 **int** = count data
 
 **real** = continuious data
 
+Data can also be declared using arrays, vectors, and matrices which can
+be more efficient. Often times there will be more than one way to
+declare data. For example in the code chunk above y is declared as a
+vector with N elements; however, y could also be declared as an array
+with N observations `int y[N]`
+
+This flexiability is great for model building but it also means that you
+will have to think carefully about what you are doing and compare if
+there are other options that might be more efficient.
+
 Another thing you will notice is `N`. Stan requires you to declare how
 my observaions you have as a variable N.
 
-Next you need to declare any variables in your model and their type.
-Because each variable catergory has an individual variable for each
-observation, every variable is declared as a vector of that variable
-with N number of observations in that vector.
+Next you need to declare any variables in your model and their type. In
+the example above there is one dependent variable `y` declared in the
+data. `y` is declared as an array with `N` observations.
 
-`<lower=1>` is just a saftey measure that we can use to make sure that
-the data we insert is in the right form. For example, if you were to
-specify `<lower=1>` Stan would stop and give a warning message if you
-try to pass it any data with N less than 1, but this is not nessecary
-and is just a saftey check if you need it.
+Stan also provides the option to include lower and upper bounds on any
+data you declare. `<lower=1>` is just a saftey measure that we can use
+to make sure that the data we insert is in the right form. For example,
+if you were to specify `int<lower=1> k` Stan would stop and give a
+warning message if you try to pass it any data with k less than 1.
+Again, these bounds are not required but can be a good percaution to
+stop you from running a model with incorrect data.
 
 ### Parameter Block
 
@@ -139,9 +147,8 @@ and is just a saftey check if you need it.
 
 The parameters block is similar to the data block but here you will
 declare your parameters. Just like in the data block you will have to
-declare what type of data they are. You can see that here they suggest
-using the saftey check `<lower=0>` on sigma becasue you can’t have a
-negative sigma.
+declare what type they are. Above you can see that they have placed a
+lower bound of 0 on sigma becasue sigma cannot be negative.
 
 ### Model Block
 
@@ -149,8 +156,9 @@ negative sigma.
       y ~ normal(mu, sigma);
     }
 
-The model block is where you will specify your model and your priors.
-This is just an example of a basic regression model.
+The model block is where you will specify your model. Here is an example
+of a basic regression model but there are many different types of models
+with varrying levels of complexity. You can see more
 
 -----
 
@@ -162,16 +170,16 @@ This is just an example of a basic regression model.
 library(tidyverse)
 ```
 
-    ## ── Attaching packages ────────────────────────────────────────────────────── tidyverse 1.2.1 ──
+    ## ── Attaching packages ────────────────────────────────────────────────────────── tidyverse 1.3.0 ──
 
-    ## ✔ ggplot2 3.2.1     ✔ purrr   0.3.2
-    ## ✔ tibble  2.1.3     ✔ dplyr   0.8.3
-    ## ✔ tidyr   0.8.3     ✔ stringr 1.4.0
-    ## ✔ readr   1.3.1     ✔ forcats 0.4.0
+    ## ✓ ggplot2 3.2.1     ✓ purrr   0.3.3
+    ## ✓ tibble  2.1.3     ✓ dplyr   0.8.4
+    ## ✓ tidyr   1.0.2     ✓ stringr 1.4.0
+    ## ✓ readr   1.3.1     ✓ forcats 0.4.0
 
-    ## ── Conflicts ───────────────────────────────────────────────────────── tidyverse_conflicts() ──
-    ## ✖ dplyr::filter() masks stats::filter()
-    ## ✖ dplyr::lag()    masks stats::lag()
+    ## ── Conflicts ───────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+    ## x dplyr::filter() masks stats::filter()
+    ## x dplyr::lag()    masks stats::lag()
 
 ``` r
 library(rstan)
@@ -179,7 +187,7 @@ library(rstan)
 
     ## Loading required package: StanHeaders
 
-    ## rstan (Version 2.19.2, GitRev: 2e1f913d3ca3)
+    ## rstan (Version 2.19.3, GitRev: 2e1f913d3ca3)
 
     ## For execution on a local, multicore CPU with excess RAM we recommend calling
     ## options(mc.cores = parallel::detectCores()).
@@ -197,7 +205,7 @@ library(rstan)
 library(bayesplot)
 ```
 
-    ## This is bayesplot version 1.7.0
+    ## This is bayesplot version 1.7.1
 
     ## - Online documentation and vignettes at mc-stan.org/bayesplot
 
